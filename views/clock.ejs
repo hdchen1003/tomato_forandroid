@@ -1,0 +1,279 @@
+<% layout('layout') %>
+
+
+
+<div class="wrap">
+    <div class="header">
+        <div class="menu">
+            <ul>
+                <li><a href="./timer.html" class="blue">Timer</a></li>
+                <li><a href="member/todoList">Todo List</a></li>
+                <li><a href="member/doneList">History</a></li>
+            </ul>
+        </div>
+
+        <div class="menu_right">
+            <ul>
+                <li><a href="member/profile"><img src="./img/user.png" class="user_img"></img></a></li>
+                
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="content">
+        <div class="des_to_time">
+            <div class="center_v">
+                <p>FOCUS 30 SECS</p>
+                <p>5 SECS BREAK</p>
+                <p>FOR A TOMATO</p>
+            </div>
+        </div>
+ <div class="time" style="display:none">
+    <%=time%>
+</div> 
+<div class="clock">
+
+    <div class="clock-face">
+        <!-- <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div> -->
+        <div class="hand second-hand"></div>
+    </div>
+</div>
+<div class="timer_tomato_img" id='tomatoimg'>
+        <img src="./img/tomato_work.png" class="tomato_work">
+       
+    </div>
+<div class="task_right">
+    <div class="status">
+        <span class="task_name"><%=mission%></span><br>
+       <form action="member/do_adddoneList" method="POST"> 
+    <input type="hidden" value="<%=itemID%>" name='item'> 
+    <button class="status_finish_btn" type="submit">FINISH</button><br>
+</form> 
+        <button class="status_stop_btn" onclick="window.location.href='member/todoList'">STOP</button><br>
+        <!-- <a href="#" class="recal light_gray">recalculate</a><br> -->
+    </div>
+</div>
+</div>
+<div class="clear"></div>
+
+<dialog class="dialog_finish">
+<span>恭喜完成一項任務</span>
+<button class="start dialog_finish_btn"></button>
+</dialog>
+
+<!-- <dialog class="dialog_stop">
+    <span>恭喜完成一項任務</span>
+    
+</dialog> -->
+<div class="footer"></div>
+<div class="clear"></div>
+</div>
+
+
+<style>
+    html {
+        /* background: #abc7d3 url(background.jpg); */
+        background-size: cover;
+        font-family: 'helvetica neue';
+        text-align: center;
+        font-size: 10px;
+    }
+
+    body {
+        font-size: 2rem;
+        display: flex;
+        flex: 1;
+        min-height: 100vh;
+        align-items: center;
+    }
+
+    .clock {
+        width: 30rem;
+        height: 30rem;
+        border: 20px solid white;
+        border-radius: 50%;
+        margin: 50px auto;
+        position: relative;
+        padding: 2rem;
+        background: rgba(0, 0, 0, .4);
+        box-shadow:
+            0 0 2px 4px rgba(0, 0, 0, 0.1),
+            inset 0 0 1px 2px #EFEFEF,
+            inset 0 0 30px black,
+            0 0 10px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .clock-face {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        /*  transform: translateY(-3px); /* account for the height of the clock hands */
+        /* canceled according to https://github.com/soyaine/JavaScript30/issues/55 */
+    }
+
+    .hand {
+        width: 50%;
+        background: #fff;
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        box-shadow:
+            0 0 0 .1px #fff,
+            0 0 0 1px rgba(0, 0, 0, 0.1),
+            0 0 8px rgba(0, 0, 0, 0.4),
+            2px 5px 1px rgba(0, 0, 0, .5);
+        transform-origin: 100% 50%;
+        transform: rotate(90deg);
+
+        transition-timing-function: cubic-bezier(0.9, 0.54, 0.26, 1.68);
+    }
+
+    .clock-face:after {
+        width: 1em;
+        height: 1em;
+        left: 50%;
+        top: 50%;
+        position: absolute;
+        display: block;
+        content: '';
+        background-color: #a8c5d1;
+        border-radius: 50%;
+        box-shadow:
+            0 0 0 2px rgba(0, 0, 0, 0.1),
+            0 0 10px rgba(0, 0, 0, 0.2);
+        transform: translate(-50%, -50%);
+    }
+
+    .hour-hand {
+        width: 40%;
+        height: 10px;
+        margin-top: -5px;
+        border-bottom-left-radius: .5em;
+        border-top-left-radius: .5em;
+        transition: all 3s;
+    }
+
+    .min-hand {
+        width: 45%;
+        height: 5px;
+        margin-top: -2.5px;
+        transition: all .1s cubic-bezier(0.9, 0.54, 0.26, 1.68);
+    }
+
+    .second-hand {
+        height: 2px;
+        margin-top: -1px;
+        border-bottom-left-radius: 100%;
+        border-top-left-radius: 100%;
+        transition: all .05s cubic-bezier(0.9, 0.54, 0.26, 1.68);
+        background-color: red;
+    }
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/5.7.2/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    // var config = {
+    //     apiKey: "AIzaSyAVgkwmRahMvKoZhk9y8li1XWV6gNZul78",
+    //     authDomain: "jsclass-179d2.firebaseapp.com",
+    //     databaseURL: "https://jsclass-179d2.firebaseio.com",
+    //     projectId: "jsclass-179d2",
+    //     storageBucket: "jsclass-179d2.appspot.com",
+    //     messagingSenderId: "435365798190"
+    // };
+    // firebase.initializeApp(config);//舊的
+    var config = {
+    apiKey: "AIzaSyA9eyF6zpP1CIVVdisNVSnNZzX8dNIxfHU",
+    authDomain: "okstartkit.firebaseapp.com",
+    databaseURL: "https://okstartkit.firebaseio.com",
+    projectId: "okstartkit",
+    storageBucket: "okstartkit.appspot.com",
+    messagingSenderId: "226813102879"
+  };
+  firebase.initializeApp(config);
+</script>
+<script>
+    const secHand = document.querySelector('.second-hand');
+    var time_need = document.querySelector('.time').textContent;
+    const date = new Date();
+    var x = time_need * 60
+    var rest = 10
+
+    
+    var img = document.getElementById("tomatoimg")
+
+    function workTime() {
+        var time = x + date.getTime()
+        var timeDeg = 360 / x
+        img.innerHTML='  <img src="./img/tomato_work.png" class="tomato_work">'
+        var a = setInterval(function () {
+            time = time - 1
+            var y = x + date.getTime() - time
+             
+       
+            console.log('工作：'+y)
+            const secondDeg = (90 + timeDeg * y);
+            if (y >= x) {
+                clearInterval(a);
+               
+                var todos = firebase.database().ref('user/<%=unumber%>/todoList/<%=itemID%>')
+                todos.once('value', function (snapshop) {
+                    data = snapshop.val()
+                    var count = data.count
+                    count++
+                    todos.update({ count: count })
+                })
+                restTime()
+            }
+            secHand.style.transform = `rotate(${secondDeg}deg)`;
+        }, 1000);
+
+    }
+    function restTime() {
+        var rest_time = rest + date.getTime()
+        var resDeg = 360/rest
+        img.innerHTML='    <img src="./img/tomato_layzy.png" class="tomato_work"><span class="break_word purple">BREAK TIME</span>'
+                    
+        var b = setInterval(function () {
+            rest_time = rest_time - 1
+            var y = rest + date.getTime() - rest_time
+            console.log('休息：'+y)
+            const secondDeg = (90 + resDeg * y);
+            if (y >= rest) {
+                clearInterval(b);
+                var todos = firebase.database().ref('user/-LVVvJ3Jv4Qlno13nUS5/todoList/-LVVvNLroCRsKiy5I4D1')
+                todos.once('value', function (snapshop) {
+                    data = snapshop.val()
+                    var count = data.count
+                    count++
+                    todos.update({ count: count })
+                })
+                workTime()
+            }
+            secHand.style.transform = `rotate(${secondDeg}deg)`;
+        }, 1000);
+
+    }
+
+
+    // function rest() {
+    //     time = time - 1
+    //     var y = x + date.getTime() - time
+    //     console.log(y)
+    //     const secondDeg = (90 + timeDeg * y);
+    //     if (y > x) {
+    //         var todos = firebase.database().ref('user/-LVVvJ3Jv4Qlno13nUS5/todoList/-LVVvNLroCRsKiy5I4D1')
+    //         todos.once('value', function (snapshop) {
+    //             data = snapshop.val()
+    //             var count = data.count
+    //             count++
+    //             todos.update({ count: count })
+    //         })
+    //         setDate()
+    //     }
+    // }
+
+    workTime()
+</script>

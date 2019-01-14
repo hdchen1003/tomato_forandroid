@@ -1,0 +1,43 @@
+<% layout('layout') %>
+
+<div class="wrap">
+    <div class="header">
+        <div class="menu">
+            <ul>
+                <li><a href="../clock">Timer</a></li>
+                <li><a href="todoList">Todo List</a></li>
+                <li><a href="doneList">History</a></li>
+            </ul>
+        </div>
+
+        <div class="menu_right">
+            <ul>
+                <li><a href="profile"><img src="./img/user.png" class="user_img blue_frame"></img></a></li>
+                <li><a href="#" style="margin-right:3%;">今日得到 <%=ccc %>/<%=target%> 個茄茄</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="content">
+        <div class="member_left">
+            <img src="./img/user.png">
+        </div>
+
+        <div class="member_right">
+            <h2>暱稱</h2>
+            <h2 class="user_name"><%- data.uname %></h2>
+            <p>每日目標<span class="blue goal_num"><%- data.target %></span>顆番茄</p>
+          
+        </div>
+        <form action="profile_edit" method="POST" class="edit_img">
+                <input  type="hidden" value="<%= data.uname %>" name='uname'>
+                <input  type="hidden" value="<%= data.target %>" name='target'>
+                <button type="submit" value="ssss"><img src="./img/edit.png" style="max-width:35px; cursor: pointer;"></button>
+            </form>
+    </div>
+    <div class="clear"></div>
+
+    <div class="footer"></div>
+    <div class="clear"></div>
+</div>

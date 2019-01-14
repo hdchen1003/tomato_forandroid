@@ -1,0 +1,60 @@
+<% layout('layout') %>
+
+<div class="wrap">
+    <div class="header">
+        <div class="menu">
+            <ul>
+                <li><a href="../clock">Timer</a></li>
+                <li><a href="todoList" class="blue">Todo List</a></li>
+                <li><a href="doneList">History</a></li>
+            </ul>
+        </div>
+
+        <div class="menu_right">
+            <ul>
+                <li><a href="profile"><img src="./img/user.png" class="user_img"></img></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="content">
+        <div class="todolist">
+            <div class="add_thing">
+                    <form method="POST" action='do_addtodoList'>
+                <input type="text" placeholder="今天有什麼任務呢"  name="todo"></input>
+                <button type="submit"  class="add">+</button>
+                </form>
+            </div>
+            <div class="clear"></div>
+            <div class="today_task">
+                <h2>今日任務</h2>
+                <ul class="tasks">
+                <% for(item in data){  %>
+                    <li class="non_start">
+                        <span class="thing_name gray" id="non_start_thing_name"><%= data[item].mission %></span>
+                        <button class="gray gray_hover">已獲得 <%= data[item].count %>顆番茄</button>
+                        <form action="../clock" method="post" >
+                            <input type="hidden" value= '<%= item   %>' name='itemID'>
+                            <input type="hidden" value= '<%= unumber   %>' name='unumber'>
+                            <input type="hidden" value= '<%= data[item].mission %>' name='mission'>
+                            <input type="hidden" name="time" value="0.1667">
+                            <button class="gray gray_hover"   value="Submit">開始計時</button>
+                        </form>
+                    </li><br>
+                    
+                    <% }; %>
+                </ul>
+               
+            </div>             
+        </div>
+        <div class="con_right">
+                <img class="tomato_img" src="./img/tomato_layzy.png" />
+                <p>今日得到 <%=ccc %>/<%=target%> 個茄茄</p>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    <div class="footer"></div>
+    <div class="clear"></div>
+</div>
